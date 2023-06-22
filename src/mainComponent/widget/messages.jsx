@@ -39,7 +39,7 @@ const MessageSection = () => {
   return (
     <>
       {isOpen ? (
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6 flex flex-col fixed h-2/3 w-1/4 bottom-0 right-5">
+        <div className="slide-up bg-white rounded-lg shadow-md p-6 mb-6 flex flex-col fixed h-2/3 w-1/4 bottom-0 right-5">
           <span className="flex flex-row items-start justify-between">
             <h2 className="text-lg font-medium text-gray-800 mb-4">Messages</h2>
 
