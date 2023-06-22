@@ -30,7 +30,7 @@ const Stories = () => {
   ]);
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+    <div className="bg-white rounded-lg shadow-md p-6 mb-6 ">
       <h2 className="text-lg font-medium text-gray-800 mb-4">Stories</h2>
       <div className="flex items-center gap-4 overflow-x-auto">
         {stories.map((story) => (

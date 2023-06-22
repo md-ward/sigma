@@ -4,18 +4,25 @@ import MessageSection from '../widget/messages';
 import Post from '../widget/posts';
 
 import postData from '../model/post_model';
+import Stories from '../widget/stories';
 
 const HomePage = () => {
     return (
         <div className="bg-gray-100 min-h-screen pt-14">
             <main className=" grid grid-cols-1 w-full    lg:grid-cols-4  ">
+                {/* <div className='w-full col-span-4 fixed h-20 z-20' >
+
+
+                    <Stories />
+                </div> */}
+
                 <div className="hidden lg:block">
                     <GroupSection></GroupSection>
                 </div>
                 <div className="lg:col-span-2 mt-6 sm:p-4 lg:p-0">
-                    {postData.map((post) => (
+                    {postData.map((post, index) => (
                         <Post
-                            key={post.date}
+                            key={index}
                             author={post.author}
                             authorAvatarUrl={post.authorAvatarUrl}
                             date={post.date}

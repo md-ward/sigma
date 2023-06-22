@@ -40,9 +40,9 @@ const Navbar = () => {
           </div>
           <div className="flex items-center  gap-6">
             <div className="hidden sm:flex items-center ml-6 space-x-8">
-              <NavItem href="#" text="Home" iconSrc="https://img.icons8.com/ultraviolet/40/home-page.png" />
-              <NavItem href="#" text="Friends" iconSrc="https://img.icons8.com/ultraviolet/40/user-group-man-woman.png" />
-              <NavItem href="#" text="Messages" iconSrc="https://img.icons8.com/ultraviolet/40/communication.png" />
+              <NavItem href="/" text="Home" iconSrc="https://img.icons8.com/ultraviolet/40/home-page.png" />
+              <NavItem href="#/friends" text="Friends" iconSrc="https://img.icons8.com/ultraviolet/40/user-group-man-woman.png" />
+              <NavItem href="#/register" text="Messages" iconSrc="https://img.icons8.com/ultraviolet/40/communication.png" />
             </div>
             <div className="sm:hidden">
               <button
