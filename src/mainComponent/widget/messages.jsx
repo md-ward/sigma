@@ -13,7 +13,6 @@ const MessageSection = () => {
   const [messages, setMessages] = useState();
   const [newMessage, setNewMessage] = useState('');
 
-  console.log(messagesData[contentId].messages)
   const handleSendMessage = () => {
     if (newMessage.trim() === '') {
       return;

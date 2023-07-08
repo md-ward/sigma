@@ -40,6 +40,14 @@
 
 }
 
+.active { border-bottom: 1px ;  background-color: cornflowerblue; border-radius: 20px;
+
+color: white;
+display: flex;
+justify-content: center ;
+padding: 4px;
+
+}
 
 
 

@@ -5,26 +5,45 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 import React, { useState } from 'react';
 
-const SignupForm = () => {
+const SignupForm = ({ completeAccount }) => {
     const { toLogin } = useRegisterStore()
 
-    const [showPassword, setshowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
-    const touggleShowPassword = () => {
-        setshowPassword(!showPassword)
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
     }
-    return (
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+    
+        // Get the form data
+        const form = event.target;
+        const formData = new FormData(form);
+    
+        // Create an object with the form data
+        const data = {};
+        for (let [key, value] of formData.entries()) {
+            data[key] = value;
+        }
+    
+        // Store the form data in session storage
+        sessionStorage.setItem('formData', JSON.stringify(data));
+    
+        // Call the completeAccount function
+        completeAccount(true);
+    };
+
+    return (
         <>
             <div className="bg-white md:w-1/3 flex flex-col h-full justify-center items-center">
                 <div className="w-2/3  ">
                     <h1 className="text-2xl font-bold mb-6 text-center text-indigo-600">
                         Create an account
                     </h1>
-                    {/* Registration form */}
 
                     <AttentionSeeker >
-                        <form className="space-y-6">
+                        <form className="space-y-6" onSubmit={handleSubmit}>
                             <div>
                                 <label
                                     htmlFor="username"
@@ -64,13 +83,13 @@ const SignupForm = () => {
                                 </label>
                                 <span className="relative">
                                     <input
-                                        type="password"
+                                        type={showPassword ? "text" : "password"}
                                         id="password"
                                         name="password"
                                         autoComplete="new-password"
                                         className="relative border  border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:border-indigo-700"
                                     />
-                                    <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} className="absolute top-1/3 -right-7 cursor-pointer text-indigo-800" onClick={touggleShowPassword} />
+                                    <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} className="absolute top-1/3 -right-7 cursor-pointer text-indigo-800" onClick={toggleShowPassword} />
 
                                 </span>
                             </div>
@@ -105,8 +124,7 @@ const SignupForm = () => {
                 </div>
             </div>
         </>
-
     );
-}
+};
 
 export default SignupForm;

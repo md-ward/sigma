@@ -2,13 +2,17 @@ import { Route, Router, Routes } from "react-router-dom";
 import HomePage from "./mainComponent/view/main_page";
 import RegistrationPage from "./registerationComponent/view/register_page";
 import FriendsPage from "./mainComponent/view/friends_page";
+import ProfilePage from "./mainComponent/view/personal_profile_page";
 
 const PagesRouter = () => {
     return (
       <Routes>
         <Route element={<HomePage />} path="/" />
+        
         <Route element={<FriendsPage />} path="/friends" />
         <Route element={<RegistrationPage />} path="/register" />
+        <Route element={<ProfilePage />} path="/profile" />
+
         <Route path="*" element={<NoMatch />} />
       </Routes>
     );

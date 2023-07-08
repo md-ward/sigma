@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faComment, faShare } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 
+
 const Post = ({ author, authorAvatarUrl, date, content, imageUrl, likes, comments, shares, commentsData }) => {
   const [LikeClicked, setLikeClicked] = useState({ clicked: false, likes: likes });
   const [showComments, setShowComments] = useState(false);

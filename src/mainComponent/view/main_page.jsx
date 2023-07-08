@@ -1,15 +1,19 @@
+import usePostStore from '../controller/create_postController';
 import ContactSection from '../widget/contacts';
 import GroupSection from '../widget/groups';
 import MessageSection from '../widget/messages';
 import Post from '../widget/posts';
 
-import postData from '../model/post_model';
-import Stories from '../widget/stories';
 
 const HomePage = () => {
+
+    const { posts } = usePostStore();
+
     return (
         <div className="bg-gray-100 min-h-screen pt-14">
+
             <main className=" grid grid-cols-1 w-full    lg:grid-cols-4  ">
+
                 {/* <div className='w-full col-span-4 fixed h-20 z-20' >
 
 
@@ -20,7 +24,7 @@ const HomePage = () => {
                     <GroupSection></GroupSection>
                 </div>
                 <div className="lg:col-span-2 mt-6 sm:p-4 lg:p-0">
-                    {postData.map((post, index) => (
+                    {posts.map((post, index) => (
                         <Post
                             key={index}
                             author={post.author}
@@ -40,7 +44,9 @@ const HomePage = () => {
                 </div>
                 <MessageSection></MessageSection>
 
+
             </main>
+
         </div>
     );
 };

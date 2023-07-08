@@ -1,3 +1,4 @@
+import FirstTimeSetupPage from "../../settingsComponent/view/first_time_accountSetup_page";
 import useRegisterStore from "../controller/regestration_controller";
 import LoginForm from "../widgets/login_form";
 import SignupForm from "../widgets/signup_form";
@@ -9,6 +10,7 @@ const RegistrationPage = () => {
 
     const [imageIndex, setImageIndex] = useState(0);
 
+    const [completeAccount, setcompleteAccount] = useState(false);
     useEffect(() => {
         const interval = setInterval(() => {
             setImageIndex((prevIndex) => (prevIndex + 1) % 3);
@@ -39,22 +41,42 @@ const RegistrationPage = () => {
                 <img src={images[imageIndex]} alt="image" className={`duration-150 ease-in-out ${imageIndex % 2 == 0 ? ' scale-110' : 'scale-100'}  md:w-1/2 md:h-auto lg:w-3/4 ${imageIndex === 0 ? 'lg:h-3/4' : 'auto'} max-sm:hidden`} />
 
                 {/* Text  */}
-                <div className="md:absolute bottom-0 left-0 right-0 p-2 sm:p-4 text-center max-sm:h-48">
-                    <h1 className="text-2xl sm:text-3xl font-bold text-dark-blue mb-2">
-                        Join our community
-                    </h1>
-                    <p className="text-base sm:text-lg text-dark-blue opacity-90 leading-relaxed">
-                        Connect with friends and family, and meet new people who share your interests.
-                    </p>
-                </div>
+                {!completeAccount ?
+                    <div className="md:absolute bottom-0 left-0 right-0 p-2 sm:p-4 text-center max-sm:h-48">
+                        <h1 className="text-2xl sm:text-3xl font-bold text-dark-blue mb-2">
+                            Join our community
+                        </h1>
+                        <p className="text-base sm:text-lg text-dark-blue opacity-90 leading-relaxed">
+                            Connect with friends and family, and meet new people who share your interests.
+                        </p>
+                    </div>
+
+                    :
+                    <div className="md:absolute bottom-0 left-0 right-0 p-2 sm:p-4 text-center max-sm:h-48">
+                        <h1 className="text-2xl sm:text-3xl font-bold text-dark-blue mb-2">Wellcom to SIGMA</h1>
+                        <h2> Please complete your account  </h2>
+
+
+
+                    </div>
+                }
             </div>
 
             {/* <SignupForm></SignupForm> */}
+
+
             {isLogIn ?
 
                 <LoginForm /> :
-                <SignupForm></SignupForm>
+                !completeAccount ? <SignupForm completeAccount={setcompleteAccount}></SignupForm> :
+                    <FirstTimeSetupPage completeAccount={setcompleteAccount} />
+
+
             }
+
+
+
+
 
 
 
