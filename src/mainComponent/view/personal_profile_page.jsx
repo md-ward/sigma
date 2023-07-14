@@ -1,7 +1,8 @@
 import profilePostsData from "../model/profile_posts_data";
 import Post from "../widget/posts";
 import coverImage from "/assets/images/11.jpg"
-import profileImg from "/assets/images/portrait-08.jpg"
+import profileImage from '/assets/images/portrait-08.jpg';
+
 
 import React, { useState, useEffect } from 'react';
 
@@ -28,13 +29,20 @@ const ProfilePage = () => {
     }, []);
 
     const storageData = JSON.parse(sessionStorage.getItem('formData'))
+    
 
-    const personalInfo = {
+    const personalInfo = storageData?{
         username: storageData.username,
         name: storageData.firstName + ' ' + storageData.lastName,
         profileImg: storageData.image
 
+    }:{
+
+        username: 'Sara@112',
+        name: "Sara Adams",
+        profileImg: profileImage
     }
+    
 
 
     return (

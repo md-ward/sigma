@@ -3,14 +3,16 @@ import ContactSection from '../widget/contacts';
 import GroupSection from '../widget/groups';
 import MessageSection from '../widget/messages';
 import Post from '../widget/posts';
-
+import useThemeStore from '../controller/themeController';
 
 const HomePage = () => {
 
     const { posts } = usePostStore();
 
+    const { theme } = useThemeStore();
+
     return (
-        <div className="bg-gray-100 min-h-screen pt-14">
+        <div className={`${theme === "light" ? 'bg-gray-100' : 'bg-slate-800 bg-opacity-80'}min-h-screen pt-14`}>
 
             <main className=" grid grid-cols-1 w-full    lg:grid-cols-4  ">
 
@@ -23,9 +25,10 @@ const HomePage = () => {
                 <div className="hidden lg:block">
                     <GroupSection></GroupSection>
                 </div>
-                <div className="lg:col-span-2 mt-6 sm:p-4 lg:p-0">
+                <div className="lg:col-span-2 mt-6 sm:p-4 lg:p-0 ">
                     {posts.map((post, index) => (
                         <Post
+
                             key={index}
                             author={post.author}
                             authorAvatarUrl={post.authorAvatarUrl}

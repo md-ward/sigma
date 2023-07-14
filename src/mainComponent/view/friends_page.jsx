@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faUserMinus } from '@fortawesome/free-solid-svg-icons';
 import friendsData from '../model/frindes_model';
+import useThemeStore from '../controller/themeController';
 
-const FriendCard = ({ friend, onAddFriend, onRemoveFriend }) => {
+const FriendCard = ({ friend, onAddFriend, onRemoveFriend, theme }) => {
     const handleAddFriend = () => {
         onAddFriend(friend.id);
     };
@@ -13,15 +14,15 @@ const FriendCard = ({ friend, onAddFriend, onRemoveFriend }) => {
     };
 
     return (
-        <div className="flex sm:flex-col bg-white rounded-lg p-2 shadow-md items-center max-sm:w-full ">
-            <img src={friend.profilePicture} alt={friend.name} className="object-fill sm:h-64 max-sm:rounded-full max-sm:h-36 max-sm:w-36 max-sm:order-1 " />
+        <div className={`flex sm:flex-col bg-white rounded-lg p-2 shadow-md items-center max-sm:w-full ${theme === 'dark' ? 'text-white bg-slate-600' : ''}`}>
+            <img src={friend.profilePicture} alt={friend.name} className={`object-fill sm:h-64 max-sm:rounded-full max-sm:h-36 max-sm:w-36 max-sm:order-1 ${theme === 'dark' ? 'filter brightness-75' : ''}`} />
             <div className="flex flex-col justify-center items-center flex-1 p-4">
-                <h2 className="text-lg font-medium ">{friend.name}</h2>
-                <button onClick={handleAddFriend} className="mt-4 bg-blue-500 hover:bg-blue-600 w-full text-white font-bold py-2 px-4 rounded  max-sm:max-w-xs">
+                <h2 className={`text-lg font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>{friend.name}</h2>
+                <button onClick={handleAddFriend} className={`mt-4 bg-blue-500 hover:bg-blue-600 w-full text-white font-bold py-2 px-4 rounded max-sm:max-w-xs `}>
                     <FontAwesomeIcon icon={faUserPlus} className="mr-2" />
                     Add Friend
                 </button>
-                <button onClick={handleRemoveFriend} className="mt-4 bg-gray-400 hover:bg-gray-500 w-full text-white font-bold py-2 px-4  rounded  max-sm:max-w-xs">
+                <button onClick={handleRemoveFriend} className={`mt-4 bg-gray-400 hover:bg-gray-500 w-full text-white font-bold py-2 px-4 rounded max-sm:max-w-xs ${theme === 'dark' ? 'bg-gray-500 hover:bg-gray-400' : ''}`}>
                     <FontAwesomeIcon icon={faUserMinus} className="mr-2" />
                     Remove
                 </button>
@@ -32,11 +33,9 @@ const FriendCard = ({ friend, onAddFriend, onRemoveFriend }) => {
 
 const FriendsPage = () => {
     const [friends, setFriends] = useState(friendsData);
+    const { theme } = useThemeStore();
 
     const handleAddFriend = (friendId) => {
-
-
-
         const updatedFriends = friends.map((friend) => {
             if (friend.id === friendId) {
                 return { ...friend, isFriend: true };
@@ -53,23 +52,23 @@ const FriendsPage = () => {
     };
 
     return (
-        <div className=" bg-gray-100 pt-24">
+        <div className={`bg-gray-100 pt-24 ${theme === 'dark' ? 'bg-gray-800' : ''} min-h-screen`}>
             <div className="flex relative flex-wrap justify-center items-center px-4 sm:px-6 lg:px-8 gap-6">
-                {friends.length != 0 ? friends.map((friend) => (
-                    <FriendCard
-                        key={friend.id}
-                        friend={friend}
-                        onAddFriend={handleAddFriend}
-                        onRemoveFriend={handleRemoveFriend}
-                    />
-                )
-
-
-                ) :
-
-                    <span className="text-lg font-medium justify-center top-1/2 absolute bg-slate-200 text-dark-blue p-2 rounded-lg shadow-lg animate-bounce">No friends available</span>
-
-                }
+                {friends.length != 0 ? (
+                    friends.map((friend) => (
+                        <FriendCard
+                            key={friend.id}
+                            friend={friend}
+                            onAddFriend={handleAddFriend}
+                            onRemoveFriend={handleRemoveFriend}
+                            theme={theme}
+                        />
+                    ))
+                ) : (
+                    <span className={`text-lg font-medium justify-center top-1/2 absolute ${theme === 'dark' ? 'bg-gray-500 text-white' : 'bg-slate-200  text-dark-blue'} p-2 rounded-lg shadow-lg animate-bounce`}>
+                        No friends available
+                    </span>
+                )}
             </div>
         </div>
     );

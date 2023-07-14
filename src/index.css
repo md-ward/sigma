@@ -40,12 +40,16 @@
 
 }
 
-.active { border-bottom: 1px ;  background-color: cornflowerblue; border-radius: 20px;
+.active {
+  border-bottom: 1px;
+  background-color: rgb(78, 131, 229);
+  border-radius: 20px;
+  width: fit-content;
 
-color: white;
-display: flex;
-justify-content: center ;
-padding: 4px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  padding: 4px;
 
 }
 

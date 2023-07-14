@@ -1,21 +1,25 @@
 import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
-import img from "/assets/images/portrait-08.jpg"
 import usePostStore from '../controller/create_postController';
-
+import profileImage from '/assets/images/portrait-08.jpg';
+import SettingsCart from './settings';
+import { Zoom } from 'react-awesome-reveal';
+import useThemeStore from '../controller/themeController';
 const links = [
   { to: '/', text: 'Home', iconSrc: 'https://img.icons8.com/ultraviolet/40/home-page.png' },
   { to: '/friends', text: 'Friends', iconSrc: 'https://img.icons8.com/ultraviolet/40/user-group-man-woman.png' },
-  { to: '/register', text: 'Messages', iconSrc: 'https://img.icons8.com/ultraviolet/40/communication.png' },
+  { to: '/messages', text: 'Messages', iconSrc: 'https://img.icons8.com/ultraviolet/40/communication.png' },
 ];
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const navigate = useNavigate()
+  const [showSettigns, setshowSettigns] = useState(false);
   const { open } = usePostStore()
+
+  const { theme } = useThemeStore();
 
 
   const handleSearchChange = (event) => {
@@ -27,21 +31,53 @@ const Navbar = () => {
   };
 
   const storageData = JSON.parse(sessionStorage.getItem('formData'))
+  const profileImg = storageData ? storageData.image : profileImage;
 
-  
 
 
   return (
-    <nav className="bg-custome-color shadow fixed w-full z-40">
+    <nav className={`${theme == 'light' ? 'bg-custome-color' : 'bg-dark-blue '} shadow fixed w-full z-40`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* left section : logo ,prfoileImg and  search bar */}
         <div className="flex justify-between h-16">
-          <div className="flex items-center gap-6">
+
+          <div className="flex items-center gap-6"  >
+
             <img
               src="https://img.icons8.com/plasticine/100/sigma.png"
               alt="logo"
-              className="w-full h-14 object-scale-down max-sm:hidden"
+              className="aspect-square h-14 object-scale-down max-sm:hidden"
             />
-            <img src={storageData.image} className='aspect-square rounded-full object-cover ring-2 ring-offset-1  w-10 sm:w-14 cursor-pointer ' onClick={() => navigate('/profile')} />
+
+            <span className='group flex justify-center'>
+
+              <img src={profileImg}
+                alt='profile image'
+                className='aspect-square rounded-full object-cover ring-2 ring-offset-1  w-10 sm:w-14 cursor-pointer '
+                onClick={() =>
+                  setshowSettigns(!showSettigns)
+                } />
+
+
+              {!showSettigns && <h1 className='scale-0 transition-all group-hover:scale-100 duration-500 ease-in-out absolute top-16 bg-opacity-90 bg-slate-800 p-2 rounded-lg text-white '>menu</h1>
+              }
+              {
+                showSettigns &&
+                <Zoom cascade={true} duration={800}
+                  className='absolute left-2 top-20 '>
+
+
+                  <SettingsCart
+                    isLightMode={theme === "light" ? true : false}
+                    setshowSettigns={setshowSettigns}></SettingsCart>
+
+
+                </Zoom>
+
+              }
+
+            </span>
+
             <div className="relative mr-4">
               <input
                 type="text"
@@ -55,15 +91,19 @@ const Navbar = () => {
               </div>
             </div>
           </div>
+
+          {/* right section ,nav links */}
+
           <div className="flex items-center gap-6">
             <div className="hidden sm:flex items-center ml-6 space-x-8">
               {links.map((link) => (
                 <NavLink
+
                   to={link.to}
                   key={link.to}
-                  className="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-          
-              >
+                  className={`border-transparent  duration-100 ease-in-out active:scale-110 rounded-lg  ${theme === 'light' ? 'text-gray-500 hover:border-gray-300 active:bg-gradient-to-b from-blue-400 to-indigo-400 ' : 'text-white  hover:border-white hover:text-slate-300'}   inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
+
+                >
                   <img width="20" height="20" src={link.iconSrc} alt={link.text} className="mr-1" />
                   {link.text}
                 </NavLink>
@@ -72,7 +112,7 @@ const Navbar = () => {
             <div className="sm:hidden">
               <button
                 onClick={handleMenuButtonClick}
-                className="block text-gray-500 hover:text-gray-700 focus:text-gray-700 focus:outline-none"
+                className={`block ${theme === "light" ? 'text-gray-500 hover:text-gray-700 focus:text-gray-700' : 'hover:text-slate-50 hover:border-slate-300'} focus:outline-none`}
               >
                 {isMenuOpen ? (
                   <FontAwesomeIcon icon={faTimes} className="rotate-90 duration-150 ease-in-out w-6 h-6" />
@@ -81,10 +121,12 @@ const Navbar = () => {
                 )}
               </button>
             </div>
-            <div className="hidden sm:flex items-center ml-6 space-x-4">
-              <button className="text-white px-4 py-2 rounded-full" onClick={open}>
+            <div className="group hidden sm:flex items-center ml-6 space-x-4">
+              <button className="text-white px-4 py-2 rounded-full " onClick={open}>
                 <img width="40" height="40" src="https://img.icons8.com/ultraviolet/40/add-property.png" alt="add-property" />
               </button>
+              <h1 className={`opacity-0 group-hover:opacity-100 duration-300  ease-in-out transition-opacity ${theme === 'light' ? "text-gray-700" : 'text-white'} font-medium`}>Add post</h1>
+
             </div>
           </div>
         </div>
