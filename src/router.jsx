@@ -1,29 +1,38 @@
-import { Route, Router, Routes } from "react-router-dom";
-import HomePage from "./mainComponent/view/main_page";
-import RegistrationPage from "./registerationComponent/view/register_page";
-import FriendsPage from "./mainComponent/view/friends_page";
-import ProfilePage from "./mainComponent/view/personal_profile_page";
-import { useId } from "react";
-import AllMessagesPage from "./mainComponent/view/all_messages_page";
+import { Route, Routes } from "react-router-dom";
+import useRegisteringStore from "./registering/store/useRegisteringStore";
+import RegistrationPage from "./registering/view/register_page";
+import Layout from "./global/layouts/Layout";
+import HomePage from "./home/view/homePage";
+import ProfilePage from "./profile/view/profilePage";
 
-const PagesRouter = () => {
-  let id = useId()
+const AppRouter = () => {
   return (
-    <Routes key={id}>
-      <Route element={<HomePage />} path="/" />
-      <Route element={<AllMessagesPage />} path="/messages" />
-      
+    <Routes >
+      <Route path="/" element={<ProtectedRoute />}>
+        <Route index element={<HomePage />}></Route>
+        <Route path="/profile" element={<ProfilePage />}></Route>
 
-      <Route element={<FriendsPage />} path="/friends" />
-      <Route element={<RegistrationPage />} path="/register" />
-      <Route element={<ProfilePage />} path="/profile" />
+
+      </Route>
+      <Route path="/register" element={<RegistrationPage />} />
 
       <Route path="*" element={<NoMatch />} />
     </Routes>
   );
 };
 
-export default PagesRouter;
+export default AppRouter;
+
+
+//! user Protected Route..........
+const ProtectedRoute = () => {
+  const { isLogedIn } = useRegisteringStore((state) => ({ isLogedIn: state.isLogedIn }));
+
+
+  return isLogedIn ? <Layout /> : <RegistrationPage />;
+};
+
+
 
 
 const NoMatch = () => {
