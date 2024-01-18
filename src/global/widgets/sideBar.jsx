@@ -44,7 +44,7 @@ const Sidebar = () => {
 
   const navigate = useNavigate();
   return (
-    <div className="    ml-1 grid  h-screen grid-rows-3   ">
+    <div className=" ml-1 grid  grid-rows-3  gap-y-7   ">
       {/* search / name / username / cover image / user image */}
       <div
         className="relative  w-full  rounded-md border border-black hover:cursor-pointer  "
@@ -93,21 +93,21 @@ const Sidebar = () => {
       </div>
 
       {/* menu */}
-      <ul className="mt-2 flex h-full flex-col gap-2 ">
+      <ul className="flex h-full w-full flex-col  space-y-1 divide-y-2 overflow-hidden ">
         {menuItems.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}
             className={({ isActive }) =>
               isActive
-                ? "w-full cursor-pointer rounded-lg bg-slate-300 shadow-md "
-                : "mx-2 flex h-full  w-full cursor-pointer  items-center  gap-2 duration-200 ease-in-out hover:rounded-lg hover:bg-white hover:shadow-md "
+                ? "cursor-pointer divide-x-2 rounded-lg bg-blue-300 shadow-md  [&_span]:text-white"
+                : " flex  cursor-pointer  items-center   duration-200 ease-in-out hover:rounded-lg hover:bg-white hover:shadow-md "
             }
           >
-            <li className="flex items-center ">
+            <li className="flex items-center gap-x-2 ">
               <FontAwesomeIcon
                 icon={item.icon}
-                className={`m-1 size-8  cursor-pointer  rounded-lg p-1 shadow-md    group-hover:${item.color} text-white  ${item.color}`}
+                className={` size-8  cursor-pointer  rounded-lg p-1 shadow-md    group-hover:${item.color} text-white  ${item.color}`}
               />
               <span className="select-none text-gray-600">{item.text}</span>
             </li>

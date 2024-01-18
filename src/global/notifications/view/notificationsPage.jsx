@@ -8,16 +8,27 @@ import { FriendResponse, NotificationType } from "../../../enums";
 import { useNavigate } from "react-router-dom";
 
 const NotificationsPage = () => {
-  const { isLoading, notifications, handleFetchingNotifications } =
-    useNotificationStore();
+  const {
+    isLoading,
+    notifications,
+    handleFetchingNotifications,
+    handleMarkNotificationAsRead,
+  } = useNotificationStore((state) => ({
+    isLoading: state.isLoading,
+    notifications: state.notifications,
+    handleFetchingNotifications: state.handleFetchingNotifications,
+    handleMarkNotificationAsRead: state.handleMarkNotificationAsRead,
+  }));
 
   const { handleResponedToFriendRequist } = useFriendStore((state) => ({
     handleResponedToFriendRequist: state.handleResponedToFriendRequist,
   }));
 
   useEffect(() => {
-    handleFetchingNotifications();
-  }, [handleFetchingNotifications]);
+    if (notifications.length == 0) {
+      handleFetchingNotifications();
+    }
+  }, [handleFetchingNotifications, notifications]);
 
   const navigate = useNavigate();
   function navToNewPost(postId) {
@@ -35,13 +46,20 @@ const NotificationsPage = () => {
         <div
           key={notification._id}
           onClick={
-            notification.type == NotificationType.NewPost
-              ? () => navToNewPost(notification.postId)
-              : null
+            notification.type == NotificationType.NewPost &&
+            !notification.isRead
+              ? () => {
+                console.count()
+                  handleMarkNotificationAsRead(notification._id),
+                    navToNewPost(notification.postId);
+                }
+              : notification.type == NotificationType.NewPost
+                ? () => navToNewPost(notification.postId)
+                : null
           }
-          className={`flex items-center justify-between rounded-md px-4 ${
-            notification.isRead ? "bg-gray-100" : "bg-blue-100"
-          } p-4 transition-colors hover:bg-gray-200`}
+          className={`flex items-center justify-between rounded-md px-4 
+          ${notification.isRead ? "bg-gray-100" : "bg-blue-100"}
+           cursor-pointer p-4 transition-colors hover:bg-gray-200`}
         >
           <div className="flex items-center">
             <div className="h-12 w-12 overflow-hidden rounded-full">

@@ -34,6 +34,7 @@ const usePostStore = create((set) => ({
 
   handleFetchingSinglePost: async (postId) => {
     try {
+      
       const singlePost = await getSinglePost(postId);
       set({ singlePost });
     } catch (error) {

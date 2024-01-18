@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import usePostStore from "../store/usePostStore";
-import  { formatPostTime } from "../../global/formatTime";
+import { formatPostTime } from "../../global/formatTime";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import PropTypes from "prop-types";
@@ -90,7 +90,9 @@ export function Post({ post }) {
         <div>
           <h2 className="text-xl font-bold">{`${post.user.first_name} ${post.user.last_name}`}</h2>
           <p className="text-gray-700">@{post.user.profile.user_name}</p>
-          <p className="text-sm text-gray-500">{formatPostTime(post.createdAt)}</p>
+          <p className="text-sm text-gray-500">
+            {formatPostTime(post.createdAt)}
+          </p>
         </div>
       </div>
       <p className={`mt-4 ${readMore ? "line-clamp-none" : "line-clamp-4"}`}>
@@ -110,6 +112,7 @@ export function Post({ post }) {
       <div className="mt-4 flex w-full flex-wrap  justify-center gap-2 overflow-hidden">
         {post.attachedImages.map((image) => (
           <img
+            loading="lazy"
             onClick={() => expandImage(image.originalUrl)}
             key={image._id}
             src={image.originalUrl}

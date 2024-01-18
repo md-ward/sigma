@@ -16,6 +16,25 @@ export async function getUserNotifications() {
   }
 }
 
+export async function markNotificationAsRead(notificationId) {
+  try {
+    const token = getCookie("jwt_user");
+    const response = await axios.put(
+      `${URL}/account/notification`,
+      { notificationId },
+      {
+        headers: {
+          Authorization: token,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error.message);
+    throw error.response.data.errorMessage;
+  }
+}
+
 export async function responedToFriendRequistNotification(
   notificationId,
   friendResponse,

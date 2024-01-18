@@ -1,5 +1,8 @@
 import { create } from "zustand";
-import { getUserNotifications } from "../controllers/notificationController";
+import {
+  getUserNotifications,
+  markNotificationAsRead,
+} from "../controllers/notificationController";
 
 const useNotificationStore = create((set) => ({
   isLoading: false,
@@ -7,13 +10,27 @@ const useNotificationStore = create((set) => ({
   notifications: [],
   handleFetchingNotifications: async () => {
     set({ isLoading: true });
-    await getUserNotifications()
-      .then((notifications) => {
-        set({ notifications, isLoading: false });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      const notifications = await getUserNotifications();
+      set({ notifications, isLoading: false });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  handleMarkNotificationAsRead: async (notificationId) => {
+    try {
+      const updatedNotification = await markNotificationAsRead(notificationId);
+      set((state) => ({
+        notifications: state.notifications.map((notification) =>
+          notification._id === updatedNotification._id
+            ? updatedNotification
+            : notification,
+        ),
+      }));
+    } catch (error) {
+      console.log(error);
+    }
   },
 }));
+
 export default useNotificationStore;

@@ -4,7 +4,7 @@ import ContactSection from "../../home/widget/contacts";
 
 const Layout = () => {
   return (
-    <div className="flex max-h-screen w-full  bg-Antiflesh-color ">
+    <div className="flex min-h-screen w-full  bg-Antiflesh-color ">
       <div className="z-20 hidden w-[20%]  bg-slate-50  shadow-md lg:block ">
         <Sidebar />
       </div>
