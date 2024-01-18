@@ -1,45 +1,43 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
-import contacts from '../model/contacts_model';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import useProfileStore from "../../profile/store/useProfileStore";
 
 const ContactSection = () => {
+  const personalProfileDetails = useProfileStore(
+    (state) => state.personalProfileDetails,
+  );
 
   return (
-    <div className={`w-1/5  rounded-lg  p-6 mb-6 fixed right-5 h-96 mt-6 md:block hidden ring ring-black `}>
-      <h2 className={`text-lg font-medium mb-4`}>
+    <div
+      className={`    m-6 mt-2 flex h-fit flex-col  justify-center rounded-lg p-6 ring ring-black `}
+    >
+      <h2 className={`mb-4 text-lg font-medium`}>
         <FontAwesomeIcon icon={faUser} className="mr-2" />
         Contacts
       </h2>
-      {contacts.map((contact) => (
+      {personalProfileDetails?.friends.map((friend) => (
         <div
-          key={contact.id}
-          className="flex items-center mb-4 cursor-pointer"
-          onClick={() => open(contact.id - 1)}
+          key={friend._id}
+          className="mb-4 flex cursor-pointer items-center rounded-lg  bg-white shadow-md"
         >
-
-          <span className='relative flex flex-col'>
+          <span className="relative flex flex-col">
             <img
-              src={contact.avatarUrl}
+              src={friend.profileImage.originalUrl}
               alt="Contact avatar"
-              className="w-16 h-16 rounded-full mr-4 shadow-md shadow-dark-blue-2"
+              className="mr-4 size-12 rounded-full "
             />
-            <span className={`w-4 h-4 rounded-full z-40 absolute bottom-0 right-4 `}></span>
+            <span
+              className={`absolute bottom-0 right-4 z-40 h-4 w-4 rounded-full `}
+            ></span>
           </span>
           <div>
             <h3 className={`text-base font-medium `}>
-              {contact.name}
+              {friend.user.first_name + " " + friend.user.last_name}
             </h3>
-            <p className={`text-sm `}>{contact.status}</p>
           </div>
-        </div >
+        </div>
       ))}
-      <a
-        href="#"
-        className={`text-blue-500 hover:underline text-sm mt-4 block text-center `}
-      >
-        View All Contacts
-      </a>
-    </div >
+    </div>
   );
 };
 

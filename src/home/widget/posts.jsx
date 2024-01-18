@@ -1,84 +1,134 @@
 import { useEffect, useState } from "react";
 import usePostStore from "../store/usePostStore";
-import formatTime from "../../global/formatTime";
+import  { formatPostTime } from "../../global/formatTime";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
+import PropTypes from "prop-types";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
+import Loader from "../../global/widgets/loader";
 
 const Posts = () => {
+  const { handleGettingGeneralPosts, posts, isLoading, error } = usePostStore(
+    (state) => ({
+      handleGettingGeneralPosts: state.handleGettingGeneralPosts,
+      posts: state.posts,
+      isLoading: state.isLoading,
+      error: state.error,
+    }),
+  );
 
-    const { handleGettingGeneralPosts, posts, isLoading, error } = usePostStore(
-        (state) => ({
-            handleGettingGeneralPosts: state.handleGettingGeneralPosts,
-            posts: state.posts,
-            isLoading: state.isLoading,
-            error: state.error,
-        })
-    );
+  useEffect(() => {
+    handleGettingGeneralPosts();
+  }, [handleGettingGeneralPosts]);
 
-    useEffect(() => {
-        handleGettingGeneralPosts();
-    }, [handleGettingGeneralPosts]);
-
-    return (
-        <div>
-            {posts?.map((post) => (
-                <Post post={post} key={post._id} />
-
-            ))}
+  return (
+    <div className="custom-scrollbar  flex  w-full flex-col items-center overflow-y-scroll md:max-h-svh lg:max-h-[36rem]">
+      {posts?.map((post) => (
+        <Post post={post} key={post._id} />
+      ))}
+      {isLoading && (
+        <div className="flex w-full max-w-2xl justify-center rounded-lg bg-gray-400">
+          <Loader />
         </div>
-    );
+      )}
+    </div>
+  );
+};
+
+Post.propTypes = {
+  post: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    attachedImages: PropTypes.string,
+    user: PropTypes.shape({
+      first_name: PropTypes.string.isRequired,
+      last_name: PropTypes.string.isRequired,
+      profile: PropTypes.shape({
+        profileImage: PropTypes.shape({
+          originalUrl: PropTypes.string.isRequired,
+        }).isRequired,
+        user_name: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
+    content: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    image: PropTypes.string,
+  }).isRequired,
 };
 
 export default Posts;
+export function Post({ post }) {
+  const [readMore, setReadMore] = useState(false);
+  const [openImage, setOpenImage] = useState({ isOpen: false, imageUrl: null });
+  function expandImage(imageUrl) {
+    setOpenImage({ isOpen: !openImage.isOpen, imageUrl: imageUrl });
+  }
+  function closeImage() {
+    setOpenImage({ isOpen: false, imageUrl: null });
+  }
+  return (
+    <div className=" m-4 w-full max-w-2xl rounded-lg bg-white p-4 shadow-md">
+      {openImage.isOpen && (
+        <div className="fixed  inset-0 z-50 flex h-full w-full flex-col  items-center  justify-center gap-2 bg-gray-500/90">
+          <FontAwesomeIcon
+            onClick={closeImage}
+            className="absolute  right-0  top-2 aspect-square cursor-pointer  rounded-full bg-white p-2"
+            icon={faClose}
+            size="xl"
+          />
+          <img
+            src={openImage.imageUrl}
+            className="max-h-[90%] max-w-screen-md bg-white"
+          />
+        </div>
+      )}
+      <div className="flex items-center">
+        <img
+          src={post.user.profile.profileImage.originalUrl}
+          alt="User Profile"
+          className="mr-4 h-12 w-12 rounded-full"
+        />
+        <div>
+          <h2 className="text-xl font-bold">{`${post.user.first_name} ${post.user.last_name}`}</h2>
+          <p className="text-gray-700">@{post.user.profile.user_name}</p>
+          <p className="text-sm text-gray-500">{formatPostTime(post.createdAt)}</p>
+        </div>
+      </div>
+      <p className={`mt-4 ${readMore ? "line-clamp-none" : "line-clamp-4"}`}>
+        {post.content}
+      </p>
+      {post.content.length > 100 ? (
+        <p
+          onClick={() => setReadMore(!readMore)}
+          className="cursor-pointer text-sky-500"
+        >
+          {readMore ? "Read less" : "Read More"}
+        </p>
+      ) : (
+        ""
+      )}
 
+      <div className="mt-4 flex w-full flex-wrap  justify-center gap-2 overflow-hidden">
+        {post.attachedImages.map((image) => (
+          <img
+            onClick={() => expandImage(image.originalUrl)}
+            key={image._id}
+            src={image.originalUrl}
+            alt="Post Image"
+            className="mt-2  size-72  rounded  border-dark-blue object-cover hover:cursor-pointer hover:border "
+          />
+        ))}
+      </div>
 
-const Post = ({ post }) => {
-
-    const [readMore, setreadMore] = useState(false);
-
-    return (
-
-        <div className="bg-white rounded-lg shadow-md p-4 m-4 w-96">
-            < div className="flex items-center" >
-                <img
-                    src={`assets/images/portrait-08.jpg`}
-                    alt="User Profile"
-                    className="w-12 h-12 rounded-full mr-4"
-                />
-                <div>
-                    <h2 className="text-xl font-bold">{`${post.user.first_name} ${post.user.last_name}`}</h2>
-                    <p className="text-gray-700">{post.user.username}</p>
-                    <p className="text-gray-500 text-sm">{formatTime(post.createdAt)}</p>
-                </div>
-            </div >
-            <p className={`mt-4 ${readMore ? "line-clamp-none" : "line-clamp-4"} `}>{post.content}</p>
-            <p onClick={() => setreadMore(!readMore)} className="text-sky-500 cursor-pointer">{readMore ? "Read less" : "Read More"}</p>
-
-            {
-                post.image && (
-                    <img
-                        src={`https://your-image-api.com/${post.image}`}
-                        alt="Post Image"
-                        className="mt-4 rounded"
-                    />
-                )
-            }
-            <div className="flex   justify-evenly  items-center mt-4">
-                <button className="flex  gap-2 items-center text-gray-500 hover:text-blue-500 focus:outline-none ml-6">
-                    <p>Comment</p>
-                    <FontAwesomeIcon icon={faComment} />
-                </button>
-                <button className="flex    gap-2 items-center text-gray-500 hover:text-blue-500 focus:outline-none">
-
-                    <p>
-                        Like
-
-                    </p>
-                    <FontAwesomeIcon icon={faThumbsUp} />
-                </button>
-            </div>
-        </div >
-
-    );
+      <div className="mt-4 flex items-center justify-evenly">
+        <button className="ml-6 flex items-center gap-2 text-gray-500 hover:text-blue-500 focus:outline-none">
+          <p>Comment</p>
+          <FontAwesomeIcon icon={faComment} />
+        </button>
+        <button className="flex items-center gap-2 text-gray-500 hover:text-blue-500 focus:outline-none">
+          <p>Like</p>
+          <FontAwesomeIcon icon={faThumbsUp} />
+        </button>
+      </div>
+    </div>
+  );
 }
-

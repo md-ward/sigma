@@ -7,26 +7,28 @@ import useRegisteringStore from "../store/useRegisteringStore";
 import gsap from "gsap";
 
 const SignupForm = () => {
-  const signupRef = useRef()
+  const signupRef = useRef();
 
-  const { error, handleSignupSubmit, isLoading, toggleLogInForm } = useRegisteringStore((state) => ({
-    isLoading: state.isLoading,
-    toggleLogInForm: state.toggleLogInForm,
-
-    error: state.error, handleSignupSubmit: state.handleSignupSubmit
-
-  }));
+  const { error, handleSignupSubmit, isLoading, toggleLogInForm } = useRegisteringStore(
+    (state) => ({
+      isLoading: state.isLoading,
+      toggleLogInForm: state.toggleLogInForm,
+      error: state.error,
+      handleSignupSubmit: state.handleSignupSubmit,
+    })
+  );
   const [showPassword, setShowPassword] = useState(false);
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
   useEffect(() => {
-
-    gsap.fromTo(signupRef.current, { opacity: 0, translateX: -100 }, { opacity: 1, translateX: 0, duration: 0.4 })
-
+    gsap.fromTo(
+      signupRef.current,
+      { opacity: 0, translateX: -100 },
+      { opacity: 1, translateX: 0, duration: 0.4 }
+    );
   }, []);
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -35,7 +37,7 @@ const SignupForm = () => {
     const form = event.target;
     const formData = new FormData(form);
 
-    handleSignupSubmit(formData)
+    handleSignupSubmit(formData);
   };
 
   return (
@@ -55,9 +57,11 @@ const SignupForm = () => {
                 First Name
               </label>
               <input
+                pattern="[a-zA-Z]+"
+                required
                 type="text"
                 name="first_name"
-                className="border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:border-indigo-700"
+                className="border invalid:caret-red-600  invalid:focus:border-rose-600 border-gray-300 rounded w-full py-2 px-3  outline-none focus:outline   focus:border-indigo-700"
               />
             </div>
             <div>
@@ -68,9 +72,11 @@ const SignupForm = () => {
                 Last Name
               </label>
               <input
+                pattern="[a-zA-Z]+"
+                required
                 type="text"
                 name="last_name"
-                className="border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:border-indigo-700"
+                className="border invalid:caret-red-600  invalid:focus:border-rose-600 border-gray-300 rounded w-full py-2 px-3  outline-none focus:outline   focus:border-indigo-700"
               />
             </div>
             <div>
@@ -78,9 +84,9 @@ const SignupForm = () => {
                 Gender
               </label>
               <select
+                required
                 id="gender"
                 name="gender"
-           
                 className="border border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:border-indigo-700"
               >
                 <option value="">Select gender</option>
@@ -94,6 +100,7 @@ const SignupForm = () => {
                 Date of Birth
               </label>
               <input
+                required
                 type="date"
                 id="dateOfBirth"
                 name="dateOfBirth"
@@ -108,6 +115,7 @@ const SignupForm = () => {
                 Email Address
               </label>
               <input
+                required
                 type="email"
                 id="email"
                 name="email"
@@ -129,6 +137,7 @@ const SignupForm = () => {
                   name="password"
                   autoComplete="new-password"
                   className="relative border  border-gray-300 rounded w-full py-2 px-3 focus:outline-none focus:border-indigo-700"
+                  required
                 />
                 <FontAwesomeIcon
                   icon={showPassword ? faEye : faEyeSlash}

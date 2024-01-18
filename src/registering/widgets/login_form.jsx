@@ -14,14 +14,13 @@ const LoginForm = () => {
 
   }, []);
 
-  const { error, handleLoginSubmit, isLoading, toggleLogInForm } = useRegisteringStore((state) => ({
+  const { error, handleLoginSubmit, isLoading, toggleLogInForm, } = useRegisteringStore((state) => ({
     isLoading: state.isLoading,
     toggleLogInForm: state.toggleLogInForm,
 
 
     error: state.error,
-    handleLoginSubmit: state.handleLoginSubmit
-
+    handleLoginSubmit: state.handleLoginSubmit,
   }));
   function handleLogin(submitEvent) {
 
@@ -59,6 +58,7 @@ const LoginForm = () => {
                 Email
               </label>
               <input
+                required
                 type="text"
                 id="email"
                 name="email"
@@ -76,6 +76,7 @@ const LoginForm = () => {
               </label>
 
               <input
+                required
                 type={showPassword ? "text" : `password`}
                 id="password"
                 name="password"

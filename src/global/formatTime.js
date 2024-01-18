@@ -1,4 +1,4 @@
-const formatTime = (createdAt) => {
+export const formatPostTime = (createdAt) => {
   const now = new Date();
   const created = new Date(createdAt);
   const diff = Math.round((now - created) / 1000); // Time difference in seconds
@@ -16,4 +16,13 @@ const formatTime = (createdAt) => {
     return `${days} days ago`;
   }
 };
-export default formatTime;
+
+export function formatBirthDay(bday) {
+  const birthday = new Date(bday);
+
+  return birthday.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}

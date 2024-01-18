@@ -6,13 +6,11 @@ export async function loginController(loginData) {
     const response = await axios.post(`${API_URL}/register/login`, loginData, {
       withCredentials: true,
     });
-    // Handle the successful login response
-    // console.log(response.data);
+
     return response.data;
   } catch (error) {
-    // Handle the login error
-    console.error("Login failed:", error);
-    throw error;
+    console.error("Login failed:", error.response.data.errorMessage);
+    throw error.response.data.errorMessage;
   }
 }
 
@@ -32,6 +30,6 @@ export async function signupController(signupData) {
   } catch (error) {
     // Handle the login error
     console.warn("Login failed:", error.response.data.errorMessage);
-    throw error.response;
+    throw error.response.data.errorMessage;
   }
 }

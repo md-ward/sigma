@@ -8,22 +8,19 @@ import { getCookie, setCookie } from "../../useCookie";
 const useRegisteringStore = create((set) => ({
   isLoading: false,
   isLogedIn: getCookie("jwt_user") || false,
-  currentForm: true,
+
   isLogInForm: true,
   loginData: null,
   signupData: null,
   error: null,
 
   toggleLogInForm: () => {
-    console.log("click");
-    set((state) => ({ isLogInForm: !state.isLogInForm }));
-    if (
-      useRegisteringStore.loginData ||
-      useRegisteringStore.signupData ||
-      useRegisteringStore.error != null
-    ) {
-      set({ signupData: null, loginData: null, error: null });
-    }
+    set((state) => ({
+      isLogInForm: !state.isLogInForm,
+      signupData: null,
+      loginData: null,
+      error: null,
+    }));
   },
 
   handleLoginSubmit: async (data) => {
@@ -41,14 +38,14 @@ const useRegisteringStore = create((set) => ({
           loginData: data,
           error: null,
           isDialogOpen: false,
-          currentForm: true,
+
           isLogedIn: true,
         }));
       })
       .catch((error) => {
         // Handle the login error
         console.error("Login failed:", error);
-        set(() => ({ error: "Login failed. Please try again." }));
+        set(() => ({ error: error, isLoading: false }));
       });
   },
   handleSignupSubmit: (data) => {
@@ -66,13 +63,13 @@ const useRegisteringStore = create((set) => ({
           signupData: data,
           error: null,
           isDialogOpen: false,
-          currentForm: true,
+
           isLogedIn: true,
         }));
       })
       .catch((error) => {
         console.error("Signup failed:", error);
-        set(() => ({ error: "Signup failed. Please try again." }));
+        set(() => ({ error, isLoading: false }));
       });
   },
 }));
