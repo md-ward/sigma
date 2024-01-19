@@ -6,6 +6,7 @@ import { faComment, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import PropTypes from "prop-types";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import Loader from "../../global/widgets/loader";
+import Comments from "./comments";
 
 const Posts = () => {
   const { handleGettingGeneralPosts, posts, isLoading, error } = usePostStore(
@@ -59,12 +60,18 @@ export default Posts;
 export function Post({ post }) {
   const [readMore, setReadMore] = useState(false);
   const [openImage, setOpenImage] = useState({ isOpen: false, imageUrl: null });
+  const [showComments, setShowComments] = useState(false);
   function expandImage(imageUrl) {
     setOpenImage({ isOpen: !openImage.isOpen, imageUrl: imageUrl });
   }
   function closeImage() {
     setOpenImage({ isOpen: false, imageUrl: null });
   }
+
+  function toggleComments() {
+    setShowComments(!showComments);
+  }
+
   return (
     <div className=" m-4 w-full max-w-2xl rounded-lg bg-white p-4 shadow-md">
       {openImage.isOpen && (
@@ -108,7 +115,6 @@ export function Post({ post }) {
       ) : (
         ""
       )}
-
       <div className="mt-4 flex w-full flex-wrap  justify-center gap-2 overflow-hidden">
         {post.attachedImages.map((image) => (
           <img
@@ -121,9 +127,12 @@ export function Post({ post }) {
           />
         ))}
       </div>
-
+      {/* ..............Comment and like ..... */}
       <div className="mt-4 flex items-center justify-evenly">
-        <button className="ml-6 flex items-center gap-2 text-gray-500 hover:text-blue-500 focus:outline-none">
+        <button
+          onClick={toggleComments}
+          className="ml-6 flex items-center gap-2 text-gray-500 hover:text-blue-500 focus:outline-none"
+        >
           <p>Comment</p>
           <FontAwesomeIcon icon={faComment} />
         </button>
@@ -132,6 +141,7 @@ export function Post({ post }) {
           <FontAwesomeIcon icon={faThumbsUp} />
         </button>
       </div>
+      {showComments && <Comments key={post._id} postId={post._id} />}
     </div>
   );
 }
