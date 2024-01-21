@@ -49,7 +49,7 @@ const NotificationsPage = () => {
             notification.type == NotificationType.NewPost &&
             !notification.isRead
               ? () => {
-                console.count()
+                  console.count();
                   handleMarkNotificationAsRead(notification._id),
                     navToNewPost(notification.postId);
                 }

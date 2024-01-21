@@ -11,6 +11,7 @@ import {
 import { NavLink, useNavigate } from "react-router-dom";
 import useProfileStore from "../../profile/store/useProfileStore";
 import { useEffect } from "react";
+import useNotificationStore from "../notifications/store/useNotificationStore";
 
 const Sidebar = () => {
   const { personalProfileDetails, handleFetchPersonalProfileDetails } =
@@ -20,6 +21,9 @@ const Sidebar = () => {
         state.handleFetchPersonalProfileDetails,
     }));
 
+  const getNotificationsCount = useNotificationStore(
+    (state) => state.getNotificationsCount,
+  );
   useEffect(() => {
     handleFetchPersonalProfileDetails();
   }, [handleFetchPersonalProfileDetails]);
@@ -34,12 +38,13 @@ const Sidebar = () => {
       color: "bg-green-500",
     },
     { icon: faBookmark, to: "/saved", text: "Saved", color: "bg-purple-500" },
-    {
-      icon: faBell,
-      to: "/notifications",
-      text: "notifications",
-      color: "bg-orange-500",
-    },
+    // {
+    //   icon: faBell,
+    //   notificationCount: getNotificationsCount(),
+    //   to: "/notifications",
+    //   text: "notifications",
+    //   color: "bg-orange-500",
+    // },
   ];
 
   const navigate = useNavigate();
@@ -113,6 +118,7 @@ const Sidebar = () => {
             </li>
           </NavLink>
         ))}
+        <NotificationMenuItem />
       </ul>
       <div className="flex h-full w-full  items-center ">
         <div className="mx-3 flex  h-1/3 w-full cursor-pointer select-none items-center justify-center gap-3 rounded-3xl border border-black bg-white p-1 text-gray-400 duration-200 ease-in-out  hover:text-black hover:shadow-md">
@@ -125,3 +131,30 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
+const NotificationMenuItem = () => {
+// useEffect(() => {
+//   useNotificationStore.subscribe()
+// }, []);
+  return (
+    <NavLink
+      to="/notifications"
+      className={({ isActive }) =>
+        isActive
+          ? "cursor-pointer divide-x-2 rounded-lg bg-blue-300 shadow-md [&_span]:text-white"
+          : "flex cursor-pointer items-center duration-200 ease-in-out hover:rounded-lg hover:bg-white hover:shadow-md"
+      }
+    >
+      <li className="flex items-center gap-x-2">
+        <FontAwesomeIcon
+          icon={faBell}
+          className="size-8 cursor-pointer rounded-lg bg-orange-500 p-1 text-white shadow-md group-hover:bg-orange-500"
+        />
+        <span className="select-none text-gray-600">Notifications</span>
+        {notificationCount > 0 && (
+          <p className="rounded-full bg-white pl-2">{notificationCount}</p>
+        )}
+      </li>
+    </NavLink>
+  );
+};

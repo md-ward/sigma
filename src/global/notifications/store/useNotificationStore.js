@@ -8,6 +8,19 @@ const useNotificationStore = create((set) => ({
   isLoading: false,
   error: null,
   notifications: [],
+
+  getNotificationsCount: () => {
+    const notifications = useNotificationStore.getState().notifications;
+    const unreadNotifications = notifications.filter(
+      (notification) => !notification.isRead,
+    );
+    return unreadNotifications.length;
+  },
+
+  handleUpdateNewNotifications: (notification) => {
+    const notifications = useNotificationStore.getState().notifications;
+    set({ notifications: [notification, ...notifications] });
+  },
   handleFetchingNotifications: async () => {
     set({ isLoading: true });
     try {
