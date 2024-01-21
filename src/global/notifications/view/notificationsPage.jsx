@@ -36,7 +36,7 @@ const NotificationsPage = () => {
   }
 
   return (
-    <section className="flex min-h-full flex-col gap-3  bg-white p-4">
+    <section className="custom-scrollbar flex max-h-screen min-h-full  flex-col gap-3 overflow-y-scroll bg-white p-4">
       <h1 className="mb-4 text-2xl font-bold">
         <FontAwesomeIcon icon={faBell} className="mr-2" />
         Notifications

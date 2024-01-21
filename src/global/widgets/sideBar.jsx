@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { NavLink, useNavigate } from "react-router-dom";
 import useProfileStore from "../../profile/store/useProfileStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useNotificationStore from "../notifications/store/useNotificationStore";
 
 const Sidebar = () => {
@@ -21,9 +21,6 @@ const Sidebar = () => {
         state.handleFetchPersonalProfileDetails,
     }));
 
-  const getNotificationsCount = useNotificationStore(
-    (state) => state.getNotificationsCount,
-  );
   useEffect(() => {
     handleFetchPersonalProfileDetails();
   }, [handleFetchPersonalProfileDetails]);
@@ -38,13 +35,6 @@ const Sidebar = () => {
       color: "bg-green-500",
     },
     { icon: faBookmark, to: "/saved", text: "Saved", color: "bg-purple-500" },
-    // {
-    //   icon: faBell,
-    //   notificationCount: getNotificationsCount(),
-    //   to: "/notifications",
-    //   text: "notifications",
-    //   color: "bg-orange-500",
-    // },
   ];
 
   const navigate = useNavigate();
@@ -73,7 +63,7 @@ const Sidebar = () => {
         <div className=" group absolute bottom-2 left-5 box-border flex h-fit w-[90%] items-center rounded-l-full rounded-r-lg border-black bg-gray-100/55 shadow-md  duration-200 ease-in-out hover:rounded-r-full hover:border hover:bg-white">
           {/* user personal image  */}
           <img
-            src={personalProfileDetails.profileImage.originalUrl}
+            src={personalProfileDetails.profileImage?.originalUrl}
             alt="user profile image"
             className="aspect-square h-20 rounded-full object-cover"
           />
@@ -91,9 +81,9 @@ const Sidebar = () => {
         </div>
         {/* profile cover image   */}
         <img
-          src={personalProfileDetails.coverImage.originalUrl}
+          src={personalProfileDetails.coverImage?.originalUrl}
           alt="profile cover image"
-          className="h-full rounded-md bg-slate-50 object-cover object-center"
+          className="h-full rounded-md  bg-slate-50 object-cover object-center"
         />
       </div>
 
@@ -133,9 +123,13 @@ const Sidebar = () => {
 export default Sidebar;
 
 const NotificationMenuItem = () => {
-// useEffect(() => {
-//   useNotificationStore.subscribe()
-// }, []);
+  const [notificationCount, setNotificationCount] = useState(0);
+  useNotificationStore.subscribe((state, prevState) => {
+    setNotificationCount(
+      useNotificationStore.getState().getNotificationsCount(),
+    );
+  });
+
   return (
     <NavLink
       to="/notifications"
@@ -152,7 +146,9 @@ const NotificationMenuItem = () => {
         />
         <span className="select-none text-gray-600">Notifications</span>
         {notificationCount > 0 && (
-          <p className="rounded-full bg-white pl-2">{notificationCount}</p>
+          <p className="rounded-full bg-rose-500 px-2 text-center text-white ">
+            {notificationCount}
+          </p>
         )}
       </li>
     </NavLink>
