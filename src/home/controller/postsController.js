@@ -10,7 +10,7 @@ export async function getSinglePost(postId) {
         Authorization: token,
       },
     });
-    // console.log(response.data.post);
+    console.log(response.data.post);
     return response.data.post;
   } catch (error) {
     console.warn(error);
@@ -26,7 +26,7 @@ export async function getGeneralPosts() {
         Authorization: token,
       },
     });
-    console.log(response.data);
+    // console.log(response.data);
     return response.data.posts;
   } catch (error) {
     console.warn(error);

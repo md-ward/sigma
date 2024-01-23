@@ -1,5 +1,7 @@
 import { useEffect } from "react";
-import useProfileStore from "../store/useProfileStore";
+import useProfileStore, {
+  InitialPersonalProfileDetails,
+} from "../store/useProfileStore";
 import { Post } from "../../home/widget/posts";
 import { formatBirthDay } from "../../global/formatTime";
 
@@ -8,15 +10,27 @@ const ProfilePage = () => {
     handleFetchPersonalProfileDetails,
     personalProfileDetails,
     personalProfilePosts,
+    handleFetchingPersonalProfilePosts,
   } = useProfileStore((state) => ({
     personalProfileDetails: state.personalProfileDetails,
     personalProfilePosts: state.personalProfilePosts,
     handleFetchPersonalProfileDetails: state.handleFetchPersonalProfileDetails,
+    handleFetchingPersonalProfilePosts:
+      state.handleFetchingPersonalProfilePosts,
   }));
 
+  // ! check to personalProfileDetails to reduced fetching profile details
+
   useEffect(() => {
-    handleFetchPersonalProfileDetails();
-  }, [handleFetchPersonalProfileDetails]);
+    if (personalProfileDetails == InitialPersonalProfileDetails) {
+      handleFetchPersonalProfileDetails();
+    }
+    handleFetchingPersonalProfilePosts();
+  }, [
+    handleFetchPersonalProfileDetails,
+    handleFetchingPersonalProfilePosts,
+    personalProfileDetails,
+  ]);
 
   return (
     <div className="min-h-screen bg-gray-100">

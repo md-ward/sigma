@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
-import { getCookie } from "../../../useCookie";
-import useNotificationStore from "../store/useNotificationStore";
-const URL = import.meta.env.VITE_API_URL;
+import { getCookie } from "../../useCookie";
+import useNotificationStore from "../notifications/store/useNotificationStore";
+const URL = import.meta.env.VITE_NOTIFICATION_SOCKET_URL;
 
 class NotificationServiceClient {
   #audio;
@@ -19,9 +19,9 @@ class NotificationServiceClient {
       console.log("Connected to notification server");
     });
 
-    this.socket.on("notification", (notification) => {
+    this.socket.on("notification", async (notification) => {
       console.warn("Received notification:", notification);
-      this.#audio.play();
+      await this.#audio.play();
       useNotificationStore
         .getState()
         .handleUpdateNewNotifications(notification);

@@ -22,7 +22,7 @@ const ContactSection = () => {
         >
           <span className="relative flex flex-col">
             <img
-              src={friend.profileImage.originalUrl}
+              src={friend.profileImage?.originalUrl}
               alt="Contact avatar"
               className="mr-4 size-12 rounded-full "
             />

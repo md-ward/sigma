@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import {
+  getUnReadUserNotificationsCount,
   getUserNotifications,
   markNotificationAsRead,
 } from "../controllers/notificationController";
@@ -8,24 +9,33 @@ const useNotificationStore = create((set) => ({
   isLoading: false,
   error: null,
   notifications: [],
+  unReadNotificationsCount: null,
 
-  getNotificationsCount: () => {
-    const notifications = useNotificationStore.getState().notifications;
-    const unreadNotifications = notifications.filter(
-      (notification) => !notification.isRead,
-    );
-    return unreadNotifications.length;
+  handleFetchingUnReadNotificationsCount: async () => {
+    try {
+      const notificationsCount = await getUnReadUserNotificationsCount();
+      set({ unReadNotificationsCount: notificationsCount });
+    } catch (error) {
+      console.warn(error);
+    }
   },
-
   handleUpdateNewNotifications: (notification) => {
     const notifications = useNotificationStore.getState().notifications;
-    set({ notifications: [notification, ...notifications] });
+    set({
+      notifications: [notification, ...notifications],
+      unReadNotificationsCount:
+        useNotificationStore.getState().unReadNotificationsCount + 1,
+    });
   },
   handleFetchingNotifications: async () => {
     set({ isLoading: true });
     try {
       const notifications = await getUserNotifications();
-      set({ notifications, isLoading: false });
+
+      set({
+        notifications,
+        isLoading: false,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -39,6 +49,7 @@ const useNotificationStore = create((set) => ({
             ? updatedNotification
             : notification,
         ),
+        unReadNotificationsCount: state.unReadNotificationsCount - 1,
       }));
     } catch (error) {
       console.log(error);

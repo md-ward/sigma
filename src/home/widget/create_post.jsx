@@ -53,7 +53,7 @@ const CreatePost = () => {
     <div className="  ">
       <div className="flex items-center space-x-2">
         <img
-          src={personalProfileDetails.profileImage.originalUrl}
+          src={personalProfileDetails.profileImage?.originalUrl ?? ""}
           alt="user profile image"
           className="aspect-square h-8 w-8  rounded-full object-fill"
         />

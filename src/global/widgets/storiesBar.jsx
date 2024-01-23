@@ -11,7 +11,7 @@ const StoriesBar = () => {
       <span className="relative z-30 flex aspect-square  size-24 cursor-pointer items-center justify-center rounded-xl border border-double border-gray-400 bg-white text-gray-400 ring-gray-600 duration-200 ease-in-out hover:scale-105 hover:text-gray-600 hover:ring-1">
         <FontAwesomeIcon icon={faPlus} className="absolute z-20 text-white" />
         <img
-          src={personalProfileDetails.profileImage.originalUrl}
+          src={personalProfileDetails.profileImage?.originalUrl ?? " "}
           alt="user profile image"
           className="absolute  h-full w-full rounded-xl object-cover"
           style={{ maxWidth: "100%", maxHeight: "100%" }}
@@ -24,10 +24,8 @@ const StoriesBar = () => {
             key={index}
             className="relative flex   aspect-square size-24  cursor-pointer items-center justify-center overflow-clip rounded-xl border border-double border-gray-400 bg-white text-gray-400 ring-2 ring-blue-500 ring-offset-1 duration-200 ease-in-out hover:scale-105 hover:text-gray-600 "
           >
-            <img
-              src="/assets/images/22.jpg"
-              className="h-full w-full object-cover"
-            />
+            {/* todo: stories inmage */}
+            <img src="" className="h-full w-full object-cover" />
             <p className="absolute text-white">kiven</p>
           </div>
         ))}

@@ -15,6 +15,19 @@ export async function getUserNotifications() {
     throw error.response.data.errorMessage;
   }
 }
+export async function getUnReadUserNotificationsCount() {
+  try {
+    const response = await axios.get(`${URL}/account/notification/count`, {
+      headers: {
+        Authorization: getCookie("jwt_user"),
+      },
+    });
+    console.log(response.data);
+    return response.data.count;
+  } catch (error) {
+    throw error.response.data.errorMessage;
+  }
+}
 
 export async function markNotificationAsRead(notificationId) {
   try {

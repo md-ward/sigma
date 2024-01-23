@@ -38,22 +38,22 @@ const Posts = () => {
 
 Post.propTypes = {
   post: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    attachedImages: PropTypes.string,
+    _id: PropTypes.string,
+    attachedImages: PropTypes.array,
     user: PropTypes.shape({
-      first_name: PropTypes.string.isRequired,
-      last_name: PropTypes.string.isRequired,
+      first_name: PropTypes.string,
+      last_name: PropTypes.string,
       profile: PropTypes.shape({
         profileImage: PropTypes.shape({
-          originalUrl: PropTypes.string.isRequired,
-        }).isRequired,
-        user_name: PropTypes.string.isRequired,
-      }).isRequired,
-    }).isRequired,
-    content: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
+          originalUrl: PropTypes.string,
+        }),
+        user_name: PropTypes.string,
+      }),
+    }),
+    content: PropTypes.string,
+    createdAt: PropTypes.string,
     image: PropTypes.string,
-  }).isRequired,
+  }),
 };
 
 export default Posts;
@@ -90,7 +90,7 @@ export function Post({ post }) {
       )}
       <div className="flex items-center">
         <img
-          src={post.user.profile.profileImage.originalUrl}
+          src={post.user.profile.profileImage?.originalUrl}
           alt="User Profile"
           className="mr-4 h-12 w-12 rounded-full"
         />
@@ -116,11 +116,11 @@ export function Post({ post }) {
         ""
       )}
       <div className="mt-4 flex w-full flex-wrap  justify-center gap-2 overflow-hidden">
-        {post.attachedImages.map((image) => (
+        {post.attachedImages.map((image, index) => (
           <img
             loading="lazy"
             onClick={() => expandImage(image.originalUrl)}
-            key={image._id}
+            key={index}
             src={image.originalUrl}
             alt="Post Image"
             className="mt-2  size-72  rounded  border-dark-blue object-cover hover:cursor-pointer hover:border "

@@ -11,7 +11,7 @@ export async function getPersonalProfileDetails() {
         Authorization: token,
       },
     });
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     return error.response.data.errorMessage;
@@ -27,7 +27,7 @@ export async function getUsersProfileDetails(profileId) {
         Authorization: token,
       },
     });
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     return error.response.data.errorMessage;

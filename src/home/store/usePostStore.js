@@ -41,6 +41,10 @@ const usePostStore = create((set) => ({
       set({ error });
     }
   },
+
+
+
+  
   handleSubmittingNewPost: async (formData) => {
     set({ isLoading: true });
     try {
@@ -58,6 +62,11 @@ const usePostStore = create((set) => ({
     } catch (error) {
       set({ error });
     }
+  },
+  handleUpdateNewPost: (post) => {
+    set((state) => ({
+      posts: [...state.posts, post],
+    }));
   },
 }));
 export default usePostStore;

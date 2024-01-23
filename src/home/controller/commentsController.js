@@ -17,7 +17,7 @@ export async function addNewComment(postId, commentText) {
         },
       },
     );
-    // console.log(response.data.post);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.warn(error);
@@ -33,7 +33,7 @@ export async function getPostComments(postId) {
         Authorization: token,
       },
     });
-    // console.log(response.data.post);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.warn(error);

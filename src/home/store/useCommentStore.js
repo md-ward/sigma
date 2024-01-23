@@ -9,14 +9,15 @@ const useCommentStore = create((set) => ({
   error: null,
   comments: [],
 
-  handleAddingNewComment: async (postId, commentText) => {
+  handleAddingNewComment: async (postId, commentTextRef) => {
     try {
       set({ isLoading: true });
-      const comment = await addNewComment(postId, commentText);
+      const comment = await addNewComment(postId, commentTextRef.current.value);
       set({
         isLoading: false,
         comments: [...useCommentStore.getState().comments, comment],
       });
+      commentTextRef.current.value = "";
     } catch (error) {
       console.log(error);
     }
